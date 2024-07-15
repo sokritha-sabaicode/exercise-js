@@ -1,3 +1,5 @@
+const toCapitalize = require("./capitalize");
+
 const mockDatabase = [
   {
     id: 1,
@@ -13,14 +15,14 @@ const mockDatabase = [
   },
 ];
 
+// Exercise B
 function getUserById(id, cb) {
   setTimeout(() => {
     const user = mockDatabase.find((user) => user.id === id);
-   
     if (user) {
-      cb(null,user);
+      cb(null, user);
     } else {
-      cb("not found",null);
+      cb("not found", null);
     }
   }, 2000);
 }
@@ -30,21 +32,30 @@ function getUserById(id, cb) {
 //     console.log(err)
 //   }
 //   else {
-//     console.log(data);
+//     console.log("HII", data);
 //   }
 // })
 
-function processData(userObj,callback) {
+
+// Exercise C
+function processData(user, callback) {
   setTimeout(() => {
-    let Name = userObj.name[0].toLocaleUpperCase()
-    for (let i = 1; i < userObj.name.length; i++){
-      Name += userObj.name[i]
-    }
-    const NewObj = { ...userObj, name: Name }
+    const capitalName = toCapitalize(user.name);
+    const NewObj = { ...user, name: capitalName }
+
     callback(NewObj)
-  },1500)
+  }, 1500)
 }
 
-processData(mockDatabase[2], (user) => {
-  console.log(user)
+
+// Exercise D
+getUserById(3, (err, user) => {
+  if (err) {
+    console.log("Err", err)
+  } else {
+    processData(user, (data) => {
+      console.log(data)
+    })
+  }
 })
+
